@@ -1,9 +1,10 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic.base import TemplateView
+from django.views.generic import DetailView
+from myexams.models import ExamsTaken
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login, logout
 admin.autodiscover()
-
 
 
 urlpatterns = patterns('myexams.views',
@@ -17,10 +18,10 @@ urlpatterns = patterns('myexams.views',
     url(r'^teacher/$', 'teacher'),
     url(r'^course/(?P<course_id>\d+)/$', 'course'),
     url(r'^exams/(?P<exam_id>\d+)/$',    'exams'),
-    #url(r'^/(?P<exam_id>\d+)/$', 'myexams.views.detail'),
-    #url(r'^MyExams/(?P<exam_id>\d+)/results/$', 'myexams.views.results'),
-    #url(r'^MyExams/(?P<exam_id>\d+)/score/$', 'myexams.views.score'),
+    url(r'^course/newexam/(?P<course_id>\d+)/$',   'new'),
+    url(r'^create/',   'create'),
+    url(r'^course/(?P<exam_id>\d+)/submit/$', 'submit'),
+    url(r'^(?P<pk>\d+)/result/$', login_required(DetailView.as_view(model=ExamsTaken,
+                        template_name='myexams/result.html')), name='exam_result'),
     url(r'^admin/', include(admin.site.urls)),
 )
-
-

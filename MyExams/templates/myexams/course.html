@@ -7,14 +7,18 @@
     
     <h2>Exams in {{ course.name }}</h2>
 
+    <h4> You have completed {{ exams_taken.count }} exams out of {{ course.exam_set.count }}</h4>
+    <h5> You're avarage grade is from the exams you have taken is {{ avg_grade | floatformat:2}} </h5>
 
 {% if exams %}
     
     {% for e in exams %}
         <ul>
-            <li><a href"#">{{ e.exam_name }}</a></li>
+            <li><a href="/exams/{{ e.id }}">{{ e.exam_name }}</a> Return date: {{ e.return_date }}</li>
         </ul>
     {% endfor %}
+{% else %} 
+<p>No exams have been created yet</p>
 {% endif %}
 
 {% endblock %}

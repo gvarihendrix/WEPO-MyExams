@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from pprint import pprint
-import datetime
 
 
 class Student(models.Model):
@@ -9,14 +8,15 @@ class Student(models.Model):
     enrolled = models.DateTimeField('Date enrolled')
 
     def __unicode__(self):
-        return u'%s %s %s Date enrolled: %s' %(self.person.first_name, self.person.last_name, self.person.username, self.enrolled)
+        return u'%s %s %s Date enrolled: %s' % (self.person.first_name, self.person.last_name, self.person.username, self.enrolled)
+
 
 class Teacher(models.Model):
     person   = models.ForeignKey(User)
     hired    = models.DateTimeField('Date hired')
 
     def __unicode__(self):
-        return u'%s %s %s Date hired: %s' %(self.person.first_name, self.person.last_name, self.person.username ,self.hired)
+        return u'%s %s %s Date hired: %s' % (self.person.first_name, self.person.last_name, self.person.username , self.hired)
 
 
 class School(models.Model):
@@ -59,7 +59,7 @@ class Exam(models.Model):
     exam_name    = models.CharField(max_length=100)
     date_created = models.DateField()
     return_date  = models.DateField()
-    
+
     # __unicode__ method like shown in Django tutorial
     def __unicode__(self):
         return u'%s %s %s' % (self.exam_name, self.date_created, self.return_date)
@@ -74,7 +74,7 @@ class Question(models.Model):
     
     # __unicode__ method like shown in Django tutorial
     def __unicode__(self):
-        return self.question
+       return self.question
 
 
 class Answer(models.Model):
@@ -88,12 +88,13 @@ class Answer(models.Model):
         return self.answer   
 
 
-
 class ExamsTaken(models.Model):
     exam          = models.ForeignKey(Exam)
-    student       = models.ForeignKey(Student)
+    student       = models.ForeignKey(User)
     date_finished = models.DateField()
     exams_grade   = models.FloatField()
+    has_taken_exam = models.BooleanField(default=False)
+
 
     class Meta:
         ordering = ['-exam', 'student']
@@ -101,13 +102,13 @@ class ExamsTaken(models.Model):
     def get_rank(self):
         exams_taken = ExamsTaken.objects.filter(exam=self.exam)
         higher = 0
-        same   = 0
+        same = 0
 
         for exam in exams_taken:
             if(self.exams_grade == exam.exams_grade):
                 same += 1
             elif(self.exams_grade < exam.exams_grade):
-                higher +=1
+                higher += 1
 
         total = len(exams_taken)
         rank = str(higher + 1)
@@ -117,12 +118,6 @@ class ExamsTaken(models.Model):
         pprint(total)
         return rank + '/' + str(total)
 
-
-class Selection(models.Model):
-    exam = models.ForeignKey(Exam)
-    question = models.ForeignKey(Question)
-    answer = models.ForeignKey(Answer)
-    name  = models.CharField(max_length=20)
-
     def __unicode__(self):
-        return self.answer
+        return u'%s %s has taken %s with the grade of %s and in rank %s' % (
+            self.student.first_name, self.student.last_name, self.exam.exam_name, self.exams_grade, self.get_rank)

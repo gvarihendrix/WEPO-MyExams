@@ -1,3 +1,4 @@
+
 """
 Django settings for MyExams project.
 
@@ -104,7 +105,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates/') 
+    os.path.join(BASE_DIR, 'templates/')
 )
 
 ROOT_URLCONF = 'MyExams.urls'

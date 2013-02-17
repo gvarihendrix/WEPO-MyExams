@@ -6,7 +6,7 @@
 <h2>Student View</h2>
 
 {% if student_courses %}
-
+    <h4>Course you are enrolled in</h4>
     <ul>
         {% for course in student_courses %}
             <li><a href="/course/{{ course.course.id }}/">{{course.course.name}}</li>

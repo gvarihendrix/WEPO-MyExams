@@ -10,7 +10,7 @@
 {% if courses %}
     <ul>
         {% for c in courses %}
-            <li><a href="/course/{{ c.id }}">{{ c.name }}</li>     
+            <li><a href="/course/{{ c.id }}">{{ c.name }}</a> Create an exam for this course <a href="/course/newexam/{{c.id}}">  New Exam</a></li>     
         {% endfor %}
     </ul>                   
 
